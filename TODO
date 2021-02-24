@@ -1,0 +1,60 @@
+
+- AST
+    - Memory leak somewhere in SourceKitten or clang bindings
+    - Switch back to master on sourcekitten
+    - not finding types, add tests
+        - _scanningView = [[DBRemoteInstallQRCodeScannerView alloc] initWithTokenPrefix:tokenPrefix];
+        - [_restClient loadAccessToken:params[@"oauth_verifier"]
+        -                  managementToken:[DBGlobalState sharedGlobalState].enterpriseManagement.managementToken];
+    - support defining types for a file that may fail to parse
+    - support overrides for types to ignore during parsing
+    - try passing all the files to the clang processor at once
+    - Support an error for the ParserOutput per file so the user can track files that were failed to parse
+    - Use background queues
+    - Confirm parsing Swift names from objc works via a test
+    - Handle categories and extensions by making a required type be the type that is extended.  Add a test for objc and swift
+    - Group files by .h and .m.  Handle categories that just expose stuff.  First check if the category has a matching .m, if not, check if removing the +XXX.h matches the name of another group, if so get the ast from that group.  Means a .m file must import the category header (+protected or +private) so they are included in what is parsed.
+        - Test.h, Test.m, Test+Private.h
+    - Take the command.json as an input
+    - Take the cache folder as an input, store the processed AST’s but keep the mapping consistent by comparing a files md5 vs the current version to determine if the AST needs to be recalculated
+    - Store a cache.json file that tracks the mapping of file paths to the ast file for it
+    - Store in the cache.json the actual parsed types from a file along with a cache version.  
+    - AST parser should support caching just the data needed for a file, the types in it, and the AST itself.  
+- Consider auto adding @_implementationOnly
+- Create doesn’t support changing an import in a newly moved file.  The new folder paths are ignored?  Move the file before or after updating imports?
+- Provide hooks where the user can give a template for a buck module.  
+- Another service that Supports combining small modules to minimize increase in dependencies while speeding up build times.
+- Swift has missing dependencies for categories.  Need to look at function calls to ensure the definition exists in a file it depends on.  Make sure the file's module is imported.
+- Produce a dependency graph for code inside the monolith to show isolated pockets and connections
+- Cleanup
+    - auto move headers from exported headers to headers
+    - auto reduce visibility of functions and properties
+    - auto delete private stuff to find dead code
+    - auto delete modules with only private calls on all the methods and hidden headers
+    - support identifying dead code
+    - support merging modules
+    - Update Package.swift
+        - https://github.com/realm/SwiftLint/blob/master/Package.swift
+        - https://github.com/jpsim/SourceKitten/blob/master/Package.swift
+        - https://github.com/krzysztofzablocki/Sourcery/blob/master/Package.swift
+    - Graphing
+        - https://github.com/SwiftDocOrg/GraphViz
+    - Better AST parsing?
+        - https://github.com/SwiftDocOrg/SwiftSemantics
+    - Code clustering
+        - https://github.com/NSHipster/DBSCAN
+    - Switch to Apple’s argument parsing
+        - https://github.com/apple/swift-argument-parser
+    - Switch to new file too
+        - https://github.com/kylef/PathKit
+    - Improve default encoding values
+        - https://www.swiftbysundell.com/tips/default-decoding-values/
+- Readme
+    - Clang AST https://www.youtube.com/watch?&v=VqCkCDFLSsc
+    - Clang Modules https://clang.llvm.org/docs/Modules.html
+    - Clang CIndex https://eli.thegreenplace.net/2011/07/03/parsing-c-in-python-with-clang
+    - Uber https://eng.uber.com/piranha/
+    - https://github.com/apple/swift-syntax
+- Extra
+    - https://github.com/typescript-eslint/typescript-eslint
+    - https://github.com/acornjs/acorn
