@@ -1,7 +1,6 @@
 
 - AST
     - Memory leak somewhere in SourceKitten or clang bindings
-    - Switch back to master on sourcekitten
     - not finding types, add tests
         - _scanningView = [[DBRemoteInstallQRCodeScannerView alloc] initWithTokenPrefix:tokenPrefix];
         - [_restClient loadAccessToken:params[@"oauth_verifier"]
@@ -35,7 +34,6 @@
     - support merging modules
     - Update Package.swift
         - https://github.com/realm/SwiftLint/blob/master/Package.swift
-        - https://github.com/jpsim/SourceKitten/blob/master/Package.swift
         - https://github.com/krzysztofzablocki/Sourcery/blob/master/Package.swift
     - Graphing
         - https://github.com/SwiftDocOrg/GraphViz
