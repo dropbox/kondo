@@ -13,7 +13,7 @@ import Shell
 public class BuckFake: Buck {
     public var printOnly: Bool = false
 
-    public var cleanupModuleInput: BuckCleanupInput?
+    public var cleanupModuleInput: CleanupInput?
     public var createModuleInput: BuckCreateInput?
     public var moveModuleInput: BuckMoveInput?
     public var moduleStatsInput: BuckStatsInput?
@@ -21,7 +21,7 @@ public class BuckFake: Buck {
 
     public init() {}
 
-    public func cleanupModule(from input: BuckCleanupInput, rootFolderPath _: String) throws {
+    public func cleanupModule(from input: CleanupInput, rootFolderPath _: String) throws {
         cleanupModuleInput = input
     }
 
