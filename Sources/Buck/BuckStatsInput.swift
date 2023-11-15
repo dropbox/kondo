@@ -6,17 +6,17 @@ import Foundation
 import Utilities
 
 public struct BuckStatsInput: Codable, ReflectedStringConvertible, Equatable {
-  public let projectBuildTargets: [String]
-  public let modules: [String]?
-  public let ignoreModules: [String]?
+    public let projectBuildTargets: [String]
+    public let modules: [String]?
+    public let ignoreModules: [String]?
 
-  public init(
-    projectBuildTargets: [String],
-    modules: [String]? = nil,
-    ignoreModules: [String]? = nil
-  ) {
-    self.projectBuildTargets = projectBuildTargets
-    self.modules = modules
-    self.ignoreModules = ignoreModules
-  }
+    public init(
+        projectBuildTargets: [String],
+        modules: [String]? = nil,
+        ignoreModules: [String]? = nil
+    ) {
+        self.projectBuildTargets = projectBuildTargets
+        self.modules = modules
+        self.ignoreModules = ignoreModules
+    }
 }

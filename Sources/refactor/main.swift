@@ -12,27 +12,27 @@ import Shell
 import Utilities
 
 do {
-  let arguments = CommandLine.arguments
-  let graph = GraphImpl()
-  let parser = try ParserImpl()
-  let rename = RenameImpl()
-  let shell = ShellImpl()
-  let buck = BuckImpl(
-    graph: graph,
-    parser: parser,
-    rename: rename,
-    shell: shell
-  )
-  let tool = CommandLineTool(
-    arguments: arguments,
-    buck: buck,
-    graph: graph,
-    parser: parser,
-    rename: rename,
-    shell: shell
-  )
+    let arguments = CommandLine.arguments
+    let graph = GraphImpl()
+    let parser = try ParserImpl()
+    let rename = RenameImpl()
+    let shell = ShellImpl()
+    let buck = BuckImpl(
+        graph: graph,
+        parser: parser,
+        rename: rename,
+        shell: shell
+    )
+    let tool = CommandLineTool(
+        arguments: arguments,
+        buck: buck,
+        graph: graph,
+        parser: parser,
+        rename: rename,
+        shell: shell
+    )
 
-  try tool.run()
+    try tool.run()
 } catch {
-  Log(error)
+    Log(error)
 }

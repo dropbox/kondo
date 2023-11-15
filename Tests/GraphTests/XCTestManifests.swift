@@ -5,9 +5,9 @@
 import Foundation
 
 #if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
-  [
-    testCase(GraphTests.allTests)
-  ]
-}
+    public func allTests() -> [XCTestCaseEntry] {
+        [
+            testCase(GraphTests.allTests),
+        ]
+    }
 #endif
