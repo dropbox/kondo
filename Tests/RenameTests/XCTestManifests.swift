@@ -5,9 +5,9 @@
 import XCTest
 
 #if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
-  [
-    testCase(RenameTests.allTests)
-  ]
-}
+    public func allTests() -> [XCTestCaseEntry] {
+        [
+            testCase(RenameTests.allTests),
+        ]
+    }
 #endif

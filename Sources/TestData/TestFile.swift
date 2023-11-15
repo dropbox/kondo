@@ -5,190 +5,190 @@
 import Foundation
 
 public struct TestFile {
-  public let name: String
-  public let path: String
-  public let content: String
+    public let name: String
+    public let path: String
+    public let content: String
 
-  public init(name: String, path: String, content: String) {
-    self.name = name
-    self.path = path
-    self.content = content
-  }
-
-  public static var example1 = TestFile(
-    name: "Example1.swift",
-    path: "ios/app",
-    content:
-    """
-    import Foundation
-    import UIKit
-    import ios_common_utilities.Swift
-
-    public enum Example1Enum: Error {
-      case first
-      case second
+    public init(name: String, path: String, content: String) {
+        self.name = name
+        self.path = path
+        self.content = content
     }
 
-    open class Example1 {
-      public struct Model: CustomStringConvertible {
-        public let name: String
-        public init(name: String) {
-          self.name = name
+    public static var example1 = TestFile(
+        name: "Example1.swift",
+        path: "ios/app",
+        content:
+        """
+        import Foundation
+        import UIKit
+        import ios_common_utilities.Swift
+
+        public enum Example1Enum: Error {
+          case first
+          case second
         }
-      }
 
-      public init() {}
+        open class Example1 {
+          public struct Model: CustomStringConvertible {
+            public let name: String
+            public init(name: String) {
+              self.name = name
+            }
+          }
 
-      public func process(_ utilities: Utilities, enum: Example2Enum) {
+          public init() {}
 
-      }
+          public func process(_ utilities: Utilities, enum: Example2Enum) {
 
-    }
-    """
-  )
+          }
 
-  public static var example2Header = TestFile(
-    name: "Example2.h",
-    path: "ios/app",
-    content:
-    """
-    #import <Foundation/Foundation.h>
-    #import <ios_common_logging/ios_common_logging-Swift.h>
+        }
+        """
+    )
 
-    @class Example3;
-    @protocol Status;
+    public static var example2Header = TestFile(
+        name: "Example2.h",
+        path: "ios/app",
+        content:
+        """
+        #import <Foundation/Foundation.h>
+        #import <ios_common_logging/ios_common_logging-Swift.h>
 
-    typedef NS_ENUM(NSUInteger, Example2Enum) {
-        Example2EnumUnknown,
-        Example2EnumFirst,
-        Example2EnumSecond,
-        Example2EnumThird
-    };
+        @class Example3;
+        @protocol Status;
 
-    extern NSString *const kExample2Extern1;
-    extern NSString *const kExample2Extern2;
+        typedef NS_ENUM(NSUInteger, Example2Enum) {
+            Example2EnumUnknown,
+            Example2EnumFirst,
+            Example2EnumSecond,
+            Example2EnumThird
+        };
 
-    @interface Example2: NSObject
+        extern NSString *const kExample2Extern1;
+        extern NSString *const kExample2Extern2;
 
-    @property (nonatomic, nullable) Example3 *example3Property;
-    @property (nonatomic, nullable) NSString *example2Property;
-    @property (nonatomic, nullable) id<Status> example2Status;
+        @interface Example2: NSObject
 
-    - (instancetype)initializeWithLogger:(Logger *)logger;
+        @property (nonatomic, nullable) Example3 *example3Property;
+        @property (nonatomic, nullable) NSString *example2Property;
+        @property (nonatomic, nullable) id<Status> example2Status;
 
-    @end
-    """
-  )
+        - (instancetype)initializeWithLogger:(Logger *)logger;
 
-  public static var example2Implementation = TestFile(
-    name: "Example2.m",
-    path: "ios/app",
-    content:
-    """
-    #import "Example2.h"
+        @end
+        """
+    )
 
-    #import <Foundation/Foundation.h>
-    #import <ios_common_status/ios_common_status.h>
-    #import "Example4Header.h"
+    public static var example2Implementation = TestFile(
+        name: "Example2.m",
+        path: "ios/app",
+        content:
+        """
+        #import "Example2.h"
 
-    @implementation Example2 {
-       Example4 *_example4;
-    }
+        #import <Foundation/Foundation.h>
+        #import <ios_common_status/ios_common_status.h>
+        #import "Example4Header.h"
 
-    - (instancetype)initializeWithLogger:(Logger *)logger { }
+        @implementation Example2 {
+           Example4 *_example4;
+        }
 
-    - (void)printStatus {
-      if (self.example2Status == nil) {
-        return;
-      }
-    }
+        - (instancetype)initializeWithLogger:(Logger *)logger { }
 
-    @end
-    """
-  )
+        - (void)printStatus {
+          if (self.example2Status == nil) {
+            return;
+          }
+        }
 
-  public static var example3 = TestFile(
-    name: "Example3.swift",
-    path: "ios/app",
-    content:
-    """
-    import Foundation
-    import UIKit
-    import ios_common_magic
-    import ios_common_utilities
+        @end
+        """
+    )
 
-    public protocol Example3Delegate: class {
-      func example3(_ example3: Example3, doSomeStuff: Bool)
-    }
+    public static var example3 = TestFile(
+        name: "Example3.swift",
+        path: "ios/app",
+        content:
+        """
+        import Foundation
+        import UIKit
+        import ios_common_magic
+        import ios_common_utilities
 
-    @objc(DBExample3)
-    public final class Example3: Example4 {
-      public weak var delegate: Example3Delegate?
-      public var utilities: Utilities? = nil
+        public protocol Example3Delegate: class {
+          func example3(_ example3: Example3, doSomeStuff: Bool)
+        }
 
-      public init() {}
+        @objc(DBExample3)
+        public final class Example3: Example4 {
+          public weak var delegate: Example3Delegate?
+          public var utilities: Utilities? = nil
 
-      public func initialize(with magic: Magic) {
+          public init() {}
 
-      }
-    }
-    """
-  )
+          public func initialize(with magic: Magic) {
 
-  public static var example4Header = TestFile(
-    name: "Example4.h",
-    path: "ios/app",
-    content:
-    """
-    #import <Foundation/Foundation.h>
-    #import <ios_common_logging/ios_common_logging.h>
+          }
+        }
+        """
+    )
 
-    @class Example4;
+    public static var example4Header = TestFile(
+        name: "Example4.h",
+        path: "ios/app",
+        content:
+        """
+        #import <Foundation/Foundation.h>
+        #import <ios_common_logging/ios_common_logging.h>
 
-    @protocol Example4Delegate <NSObject>
-    - (void)doStuffFrom:(Example4 *)example4;
-    @end
+        @class Example4;
 
-    @interface Example4: NSObject
+        @protocol Example4Delegate <NSObject>
+        - (void)doStuffFrom:(Example4 *)example4;
+        @end
 
-    @property (nonatomic, weak) id<Example4Delegate> delegate;
-    @property (nonatomic) Logger *logger;
+        @interface Example4: NSObject
 
-    - (void)updateStuff:(NSString *)stuff;
+        @property (nonatomic, weak) id<Example4Delegate> delegate;
+        @property (nonatomic) Logger *logger;
 
-    @end
-    """
-  )
+        - (void)updateStuff:(NSString *)stuff;
 
-  public static var example4Implementation = TestFile(
-    name: "Example4.m",
-    path: "ios/app",
-    content:
-    """
-    #import "Example4.h"
+        @end
+        """
+    )
 
-    #import <Foundation/Foundation.h>
-    #import <ios_common_utilities/ios_common_utilities.h>
-    #import <ios_common_magic/ios_common_magic.h>
-    #import "Example2Header.h"
+    public static var example4Implementation = TestFile(
+        name: "Example4.m",
+        path: "ios/app",
+        content:
+        """
+        #import "Example4.h"
 
-    @interface Example4 ()
+        #import <Foundation/Foundation.h>
+        #import <ios_common_utilities/ios_common_utilities.h>
+        #import <ios_common_magic/ios_common_magic.h>
+        #import "Example2Header.h"
 
-    @property (nonatomic) Magic *magic;
+        @interface Example4 ()
 
-    @end
+        @property (nonatomic) Magic *magic;
 
-    @implementation Example4 {
-      Utilities *_utilities;
-    }
+        @end
 
-    - (void)updateStuff:(NSString *)stuff {
-      _utilities = [[Example2 alloc] initWithStuff:stuff];
-    }
+        @implementation Example4 {
+          Utilities *_utilities;
+        }
 
-    - (void)changeNumbers:(NSArray<NSNumber *>)numbers { }
+        - (void)updateStuff:(NSString *)stuff {
+          _utilities = [[Example2 alloc] initWithStuff:stuff];
+        }
 
-    @end
-    """
-  )
+        - (void)changeNumbers:(NSArray<NSNumber *>)numbers { }
+
+        @end
+        """
+    )
 }

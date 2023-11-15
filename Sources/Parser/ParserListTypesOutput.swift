@@ -6,9 +6,9 @@ import Foundation
 import Utilities
 
 public struct ParserListTypesOutput: Codable, ReflectedStringConvertible, Equatable {
-  public let files: [ParsedFile]
+    public let files: [ParsedFile]
 
-  public init(files: [ParsedFile]) {
-    self.files = files
-  }
+    public init(files: [ParsedFile]) {
+        self.files = files
+    }
 }
