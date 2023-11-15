@@ -1,8 +1,3 @@
-# MEP 26 - Swift Formatting
-# https://paper.dropbox.com/doc/MEP-26-Swift-Formatting--AbmEIStzGfYSyzicLvfmvn9SAg-uhY3NxdhNZzZXgZWV6qxi
-# FYI: the clang-format equivalent of this file is in xplat root, because clang-format can't be told where
-# The pinning for swift-format is controlled in tools/setup/dev_setup.py
-
 # TODO: can we get this from Xcode automatically?
 --swiftversion 5.6
 
