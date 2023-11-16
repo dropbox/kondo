@@ -9,7 +9,7 @@ import Utilities
 public protocol Buck: AnyObject {
     var printOnly: Bool { get set }
 
-    func cleanupModule(from input: BuckCleanupInput, rootFolderPath: String) throws
+    func cleanupModule(from input: CleanupInput, rootFolderPath: String) throws
 
     func createModule(from input: BuckCreateInput, rootFolderPath: String) throws
 
@@ -22,11 +22,11 @@ public protocol Buck: AnyObject {
 
 extension Buck {
     public func cleanupModule(fromJson json: String, rootFolderPath: String = ".") throws {
-        let input: BuckCleanupInput = try json.parseJson()
+        let input: CleanupInput = try json.parseJson()
         try cleanupModule(from: input, rootFolderPath: rootFolderPath)
     }
 
-    public func cleanupModule(from input: BuckCleanupInput) throws {
+    public func cleanupModule(from input: CleanupInput) throws {
         try cleanupModule(from: input, rootFolderPath: ".")
     }
 
