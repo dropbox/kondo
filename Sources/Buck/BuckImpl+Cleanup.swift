@@ -176,7 +176,7 @@ extension BuckImpl {
     }
 
     /// Given a single `File`, attempt to reduce imports by removing one import at a time and then checking to see
-    /// if all downstream dependencies (precalculated and passed in as `projectBuildTargets`) can stil lbuild.
+    /// if all downstream dependencies (precalculated and passed in as `projectBuildTargets`) can still build.
     private func reduceImports(
         of file: File,
         root: Folder,
