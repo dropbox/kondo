@@ -17,7 +17,7 @@ extension BuckImpl {
         LogVerbose(input.description)
 
         let root = try Folder(path: rootFolderPath)
-        /// Map each item in `projectBuildTargets` to set of it's deps, and filtered by `input.modules` allowlist if set.
+        /// Map each item in `projectBuildTargets` to a set of its deps. Deps are filtered to `input.modules` allowlist if it exists.
         var targetModuleMap = [String: Set<String>]()
         /// Lines-of-code count for each item that made it into `targetModuleMap`.
         var moduleLinesOfCodeMap = [String: Int]()
