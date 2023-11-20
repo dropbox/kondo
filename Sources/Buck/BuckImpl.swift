@@ -17,7 +17,6 @@ public final class BuckImpl: Buck {
     private static let invertedAlphanumerics = CharacterSet.alphanumerics.inverted
     private static let sourceFiles = [".swift", ".m", ".mm"]
     private static let parseableFileTypes = [".h", ".m", ".mm", ".swift"]
-    private static let statsFileTypes = [".h", ".hpp", ".c", ".cc", ".cpp", ".swift", ".m", ".mm"]
     private static let moduleImportPrefixes = [
         "#import <",
         "import ",
@@ -163,67 +162,7 @@ public final class BuckImpl: Buck {
     }
 
     public func moduleStats(from input: BuckStatsInput, rootFolderPath: String) throws {
-        LogVerbose("Module stats")
-        LogVerbose(input.description)
-
-        let root = try Folder(path: rootFolderPath)
-        var targetModuleMap = [String: Set<String>]()
-        var moduleLinesOfCodeMap = [String: Int]()
-
-        for projectTarget in input.projectBuildTargets {
-            var targetModules = Set<String>()
-            let libraries = try parseDependencies(fromTarget: projectTarget)
-            try libraries.values.forEach { library in
-                if let validModules = input.modules {
-                    guard validModules.contains(library.target) else {
-                        return
-                    }
-                }
-                targetModules.insert(library.target)
-                guard moduleLinesOfCodeMap[library.target] == nil else {
-                    return
-                }
-
-                let linesOfCode = try stats(for: library, root: root)
-                moduleLinesOfCodeMap[library.target] = linesOfCode
-            }
-            targetModuleMap[projectTarget] = targetModules
-        }
-        var output = ""
-        for projectTarget in input.projectBuildTargets {
-            output += "\n\n\(projectTarget)\n"
-            guard let modules = targetModuleMap[projectTarget] else {
-                LogError("Missing modules for \(projectTarget)")
-                continue
-            }
-
-            output += "Total modules \(modules.count)\n"
-
-            let totalLinesOfCode = modules.reduce(0) { $0 + (moduleLinesOfCodeMap[$1] ?? 0) }
-            output += "Total lines of code \(totalLinesOfCode)\n"
-
-            let otherModules = targetModuleMap.reduce(Set<String>()) { set, pair -> Set<String> in
-                guard pair.key != projectTarget else {
-                    return set
-                }
-                return set.union(pair.value)
-            }
-
-            let sharedModules = modules.intersection(otherModules)
-            output += "Shared modules \(sharedModules.count)\n"
-
-            let sharedModuleCode = sharedModules.reduce(0) { $0 + (moduleLinesOfCodeMap[$1] ?? 0) }
-            let sharedModuleCodePercent = Int(100.0 * Double(sharedModuleCode) / Double(totalLinesOfCode))
-            output += "Shared modules lines of code \(sharedModuleCode) (\(sharedModuleCodePercent)%)\n"
-
-            let uniqueModules = modules.subtracting(otherModules)
-            output += "Unique modules \(uniqueModules.count)\n"
-
-            let uniqueModulesCode = uniqueModules.reduce(0) { $0 + (moduleLinesOfCodeMap[$1] ?? 0) }
-            let uniqueModulesCodePercent = 100 - sharedModuleCodePercent
-            output += "Unique modules lines of code \(uniqueModulesCode) (\(uniqueModulesCodePercent)%)\n"
-        }
-        print(output)
+        try moduleStatsImpl(from: input, rootFolderPath: rootFolderPath)
     }
 
     // MARK: - Private
@@ -247,7 +186,7 @@ public final class BuckImpl: Buck {
         return moduleFiles
     }
 
-    private func folder(for module: BuckModule, root: Folder) -> Folder? {
+    internal func folder(for module: BuckModule, root: Folder) -> Folder? {
         var targetPath = module.target
         guard targetPath.hasPrefix("//") else {
             LogError("Invalid prefix \(module)")
@@ -272,7 +211,7 @@ public final class BuckImpl: Buck {
         return folder
     }
 
-    private func files(for module: BuckModule, in moduleFolder: Folder) -> [File] {
+    internal func files(for module: BuckModule, in moduleFolder: Folder) -> [File] {
         var files = [String: File]()
         module.srcs?.compactMap { try? moduleFolder.file(at: $0) }
             .forEach { files[$0.path] = $0 }
@@ -281,30 +220,6 @@ public final class BuckImpl: Buck {
         module.exported_headers?.compactMap { try? moduleFolder.file(at: $0) }
             .forEach { files[$0.path] = $0 }
         return Array(files.values)
-    }
-
-    private func stats(for module: BuckModule, root: Folder) throws -> Int {
-        guard let moduleFolder = folder(for: module, root: root) else {
-            return 0
-        }
-        let moduleFiles = files(for: module, in: moduleFolder)
-
-        let uniqueFiles = moduleFiles
-            .filter { file -> Bool in Self.statsFileTypes.contains(where: { file.name.hasSuffix($0) }) }
-        let linesOfCode = uniqueFiles.reduce(0) { total, file -> Int in
-            let content = try? file.readAsString()
-            let lines = content?
-                .components(separatedBy: .newlines)
-                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-                .filter { !$0.isEmpty }
-                .count ?? 0
-            if lines > 5_000 {
-                LogInfo("Huge file \(file.path) with \(lines)")
-            }
-            return total + lines
-        }
-        LogInfo("\(module.target) has \(uniqueFiles.count) files \(linesOfCode)")
-        return linesOfCode
     }
 
     private func renameObjcImportList(
