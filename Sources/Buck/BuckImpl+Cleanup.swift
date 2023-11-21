@@ -1,8 +1,5 @@
 //
-//  File.swift
-//
-//
-//  Created by zjaquish on 11/16/23.
+//  Copyright © 2023 Dropbox, Inc. All rights reserved.
 //
 
 import Files
@@ -540,5 +537,14 @@ extension BuckImpl {
             }
         }
         return orderedModules
+    }
+
+    private func build(targets: [String], noCache: Bool) -> Bool {
+        do {
+            return try shell.build(targets: targets, noCache: noCache)
+        } catch {
+            LogVerbose("Build error \(error)")
+            return false
+        }
     }
 }

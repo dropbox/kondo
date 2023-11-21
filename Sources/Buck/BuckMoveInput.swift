@@ -5,6 +5,7 @@
 import Foundation
 import Utilities
 
+/// Configuration for the `move` command, usually parsed from a json file.
 public struct BuckMoveInput: Codable, ReflectedStringConvertible, Equatable {
     public struct Path: Codable, Equatable, ReflectedStringConvertible {
         public let source: String
@@ -16,7 +17,10 @@ public struct BuckMoveInput: Codable, ReflectedStringConvertible, Equatable {
         }
     }
 
+    /// Provide a list of file moves.
     public let paths: [Path]
+
+    /// Ignorelist that is possibly a no-op.
     public let ignoreFolders: [String]?
 
     public init(

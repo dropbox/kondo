@@ -5,6 +5,7 @@
 import Foundation
 import Utilities
 
+/// Configuration for the `create` command, usually parsed from a json file.
 public struct BuckCreateInput: Codable, ReflectedStringConvertible, Equatable {
     public struct Module: Codable, Equatable, ReflectedStringConvertible {
         public let destination: String
@@ -31,8 +32,13 @@ public struct BuckCreateInput: Codable, ReflectedStringConvertible, Equatable {
         }
     }
 
+    /// Provide the structure of each module to be created.
     public let modules: [Module]
+
+    /// Any deps or frameworks used by `modules` should be provided here (in any `projectBuildTarget` dep tree)s so they can be linked.
     public let projectBuildTargets: [String]
+
+    /// Folders to ignore during the `renameObjcImportList` step.
     public let ignoreFolders: [String]?
 
     public init(
