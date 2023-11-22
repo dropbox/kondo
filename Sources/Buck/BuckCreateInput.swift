@@ -35,7 +35,7 @@ public struct BuckCreateInput: Codable, ReflectedStringConvertible, Equatable {
     /// Provide the structure of each module to be created.
     public let modules: [Module]
 
-    /// Any deps or frameworks used by `modules` should be provided here (in any `projectBuildTarget` dep tree)s so they can be linked.
+    /// Any deps or frameworks used by `modules` should be provided here (in any `projectBuildTarget` dep tree).
     public let projectBuildTargets: [String]
 
     /// Folders to ignore during the `renameObjcImportList` step.
