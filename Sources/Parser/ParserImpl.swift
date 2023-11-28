@@ -337,6 +337,8 @@ public final class ParserImpl: Parser {
             break
         case .union:
             break
+        case .staticAssert:
+            break
         }
     }
 
