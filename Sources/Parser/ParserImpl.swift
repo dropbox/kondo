@@ -329,6 +329,8 @@ public final class ParserImpl: Parser {
             break
         case .unexposedDecl:
             break
+        case .union:
+            break
         }
     }
 
