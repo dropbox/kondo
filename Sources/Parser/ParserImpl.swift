@@ -40,7 +40,13 @@ public final class ParserImpl: Parser {
         let dispatchGroup = DispatchGroup()
         let lock = NSLock()
         input.filePaths.forEach { filePath -> Void in
-            guard parsedFiles[filePath] == nil else { return }
+            lock.lock()
+            guard parsedFiles[filePath] == nil else {
+                lock.unlock()
+                return
+            }
+            lock.unlock()
+            
             dispatchGroup.enter()
             queue.async { () -> Void in
 
