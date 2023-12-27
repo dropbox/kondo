@@ -57,52 +57,6 @@ public final class BuckImpl: Buck {
 
     // MARK: - Shared by function impls
 
-    internal func files(for module: BuckModule, root: Folder) throws -> [File] {
-        guard let moduleFolder = folder(for: module, root: root) else {
-            LogInfo("Failed to reduce imports for \(module.name), invalid folder")
-            return []
-        }
-        let moduleFiles = files(for: module, in: moduleFolder)
-            .sorted { $0.path < $1.path }
-        return moduleFiles
-    }
-
-    internal func folder(for module: BuckModule, root: Folder) -> Folder? {
-        var targetPath = module.target
-        guard targetPath.hasPrefix("//") else {
-            LogError("Invalid prefix \(module)")
-            return nil
-        }
-        targetPath = String(targetPath.dropFirst(2))
-        guard targetPath.hasSuffix(module.name) else {
-            LogError("Invalid suffix \(module)")
-            return nil
-        }
-        targetPath = String(targetPath.dropLast(module.name.count))
-
-        guard targetPath.hasSuffix(":") else {
-            LogError("Invalid suffix : \(module)")
-            return nil
-        }
-        targetPath = String(targetPath.dropLast(1))
-        guard let folder = try? root.createSubfolderIfNeeded(at: targetPath) else {
-            LogError("Invalid folder \(module)")
-            return nil
-        }
-        return folder
-    }
-
-    internal func files(for module: BuckModule, in moduleFolder: Folder) -> [File] {
-        var files = [String: File]()
-        module.srcs?.compactMap { try? moduleFolder.file(at: $0) }
-            .forEach { files[$0.path] = $0 }
-        module.headers?.compactMap { try? moduleFolder.file(at: $0) }
-            .forEach { files[$0.path] = $0 }
-        module.exported_headers?.compactMap { try? moduleFolder.file(at: $0) }
-            .forEach { files[$0.path] = $0 }
-        return Array(files.values)
-    }
-
     internal func loadModuleImports(from files: [File]) throws -> [String] {
         guard !files.isEmpty else { return [] }
         var modules = Set<String>()

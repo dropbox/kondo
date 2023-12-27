@@ -22,7 +22,7 @@ extension BuckImpl {
 
         let root = try Folder(path: rootFolderPath)
         let allFiles = try moduleMap.values.flatMap { module -> [File] in
-            let moduleFiles = try files(for: module, root: root)
+            let moduleFiles = try module.files(root: root)
                 .filter { file -> Bool in Self.parseableFileTypes.contains(where: { file.name.hasSuffix($0) }) }
                 .filter { file -> Bool in
                     !["DBSDKImportsShared.h", "DBSDKImportsGenerated.h"].contains(where: { file.name.hasSuffix($0) })

@@ -130,7 +130,7 @@ extension BuckImpl {
             default: return 3
             }
         }
-        let moduleFiles = try files(for: module, root: root)
+        let moduleFiles = try module.files(root: root)
             .filter { file -> Bool in Self.importReducerFileTypes.contains(where: { file.name.hasSuffix($0) }) }
             .sorted { $0.path < $1.path }
             .sorted { order(for: $0) < order(for: $1) }
@@ -278,7 +278,7 @@ extension BuckImpl {
 
         // Calculate fileModuleMap and fileMap.
         try modules.forEach { module in
-            let moduleFiles = try self.files(for: module, root: root)
+            let moduleFiles = try module.files(root: root)
             moduleFiles.forEach { file in
                 fileModuleMap[file.path(relativeTo: root)] = module
                 fileMap[file.path(relativeTo: root)] = file
@@ -491,7 +491,7 @@ extension BuckImpl {
         let moduleNameMap = modules.asMap { $0.module_name ?? "" }
 
         let estimatedDependencies = try modules.reduce(into: [String: [String]]()) { result, module in
-            let moduleFiles = try self.files(for: module, root: root)
+            let moduleFiles = try module.files(root: root)
             let allModuleNames = try loadModuleImports(from: moduleFiles)
             let targets = Set(allModuleNames).compactMap { moduleNameMap[$0]?.target }
             result[module.target] = targets

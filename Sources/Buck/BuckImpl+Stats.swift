@@ -84,10 +84,10 @@ extension BuckImpl {
 
     /// Print file count and lines of code count for the given `BuckModule`, return LOC count
     private func stats(for module: BuckModule, root: Folder) throws -> Int {
-        guard let moduleFolder = folder(for: module, root: root) else {
+        guard let moduleFolder = module.folder(root: root) else {
             return 0
         }
-        let moduleFiles = files(for: module, in: moduleFolder)
+        let moduleFiles = module.files(in: moduleFolder)
 
         let uniqueFiles = moduleFiles
             .filter { file -> Bool in Self.statsFileTypes.contains(where: { file.name.hasSuffix($0) }) }

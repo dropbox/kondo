@@ -46,7 +46,7 @@ public final class ParserImpl: Parser {
                 return
             }
             lock.unlock()
-            
+
             dispatchGroup.enter()
             queue.async { () -> Void in
 
