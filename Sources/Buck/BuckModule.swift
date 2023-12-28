@@ -2,6 +2,7 @@
 //  Copyright © 2021 Dropbox, Inc. All rights reserved.
 //
 
+import Files
 import Foundation
 import Utilities
 
@@ -87,5 +88,53 @@ public struct BuckModule: Codable, ReflectedStringConvertible, Equatable, Hashab
             guard dep.hasPrefix(":") else { return dep }
             return "\(buckPath)\(dep)"
         }
+    }
+
+    // MARK: Files
+
+    public func files(root: Folder) throws -> [File] {
+        guard let moduleFolder = folder(root: root) else {
+            LogInfo("Failed to reduce imports for \(name), invalid folder")
+            return []
+        }
+        let moduleFiles = files(in: moduleFolder)
+            .sorted { $0.path < $1.path }
+        return moduleFiles
+    }
+
+    public func folder(root: Folder) -> Folder? {
+        var targetPath = target
+        guard targetPath.hasPrefix("//") else {
+            LogError("Invalid prefix \(self)")
+            return nil
+        }
+        targetPath = String(targetPath.dropFirst(2))
+        guard targetPath.hasSuffix(name) else {
+            LogError("Invalid suffix \(self)")
+            return nil
+        }
+        targetPath = String(targetPath.dropLast(name.count))
+
+        guard targetPath.hasSuffix(":") else {
+            LogError("Invalid suffix : \(self)")
+            return nil
+        }
+        targetPath = String(targetPath.dropLast(1))
+        guard let folder = try? root.createSubfolderIfNeeded(at: targetPath) else {
+            LogError("Invalid folder \(self)")
+            return nil
+        }
+        return folder
+    }
+
+    public func files(in moduleFolder: Folder) -> [File] {
+        var files = [String: File]()
+        srcs?.compactMap { try? moduleFolder.file(at: $0) }
+            .forEach { files[$0.path] = $0 }
+        headers?.compactMap { try? moduleFolder.file(at: $0) }
+            .forEach { files[$0.path] = $0 }
+        exported_headers?.compactMap { try? moduleFolder.file(at: $0) }
+            .forEach { files[$0.path] = $0 }
+        return Array(files.values)
     }
 }
