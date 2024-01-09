@@ -9,7 +9,7 @@ let package = Package(
     ],
     products: [
         .executable(name: "refactor", targets: ["refactor"]),
-        .library(name: "Parser", targets: ["Parser"]),
+        .library(name: "Kondo", targets: ["Buck"]),
     ],
     dependencies: [
         .package(url: "https://github.com/JohnSundell/Files", from: "4.0.0"),
