@@ -8,22 +8,22 @@ A tool to help extract code into modules, move modules, rename modules, and anal
 
 # Usage
 
-## Create XCode Project
+## Create Xcode Project
 
-```
+```sh
 swift package generate-xcodeproj
 ```
 
-## Build project for commandline
+## Build Project for Command Line
 
-```
+```sh
 swift build
 cp .build/debug/refactor /usr/local/bin/
 ```
 
-## Use generated tool
+## Use Generated Tool
 
-```
+```sh
 refactor create buckPath=/Users/jlaws/src/xplat1/tools/buck/bin/buck shellPath=/Users/jlaws/src/xplat1 jsonFile=/Users/jlaws/Desktop/create.json
 
 refactor move buckPath=/Users/jlaws/src/xplat1/tools/buck/bin/buck shellPath=/Users/jlaws/src/xplat1 jsonFile=/Users/jlaws/Desktop/move.json
@@ -31,9 +31,9 @@ refactor move buckPath=/Users/jlaws/src/xplat1/tools/buck/bin/buck shellPath=/Us
 refactor parse buckPath=/Users/jlaws/src/xplat1/tools/buck/bin/buck shellPath=/Users/jlaws/src/xplat1 jsonFile=/Users/jlaws/Desktop/parse.json
 ```
 
-### Create Input Json Example
+### Create Input JSON Example
 
-```
+```json
 {
     "modules": [
         {
@@ -75,9 +75,9 @@ refactor parse buckPath=/Users/jlaws/src/xplat1/tools/buck/bin/buck shellPath=/U
 }
 ```
 
-### Move Input Json Example
+### Move Input JSON Example
 
-```
+```json
 {
     "paths": [
         {
@@ -104,9 +104,9 @@ refactor parse buckPath=/Users/jlaws/src/xplat1/tools/buck/bin/buck shellPath=/U
 }
 ```
 
-### Parse Input Json Example
+### Parse Input JSON Example
 
-```
+```json
 {
     "csvOutputPath": "/Users/jlaws/Desktop/types.csv",
     "jsonOutputPath": "/Users/jlaws/Desktop/types.json",
@@ -124,20 +124,20 @@ refactor parse buckPath=/Users/jlaws/src/xplat1/tools/buck/bin/buck shellPath=/U
 
 ## View graph output
 
-```
+```sh
 brew install graphviz
 ```
 
 # Contribute
 
-## Setup SwiftFormat
+## Set Up SwiftFormat
 
-```
-brew install SwiftFormat
+```sh
+brew install swiftformat
 ```
 
-## Setup SwiftLint
+## Set Up SwiftLint
 
-```
+```sh
 brew install swiftlint
 ```
