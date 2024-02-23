@@ -16,7 +16,6 @@ let package = Package(
         .package(url: "https://github.com/JohnSundell/ShellOut.git", from: "2.0.0"),
         .package(url: "https://github.com/jpsim/SourceKitten.git", branch: "main"),
         .package(url: "https://github.com/surfandneptune/CommandCougar.git", from: "1.0.0"),
-        .package(url: "https://github.com/SwiftDocOrg/GraphViz", from: "0.1.1"),
     ],
     targets: [
         .executableTarget(
@@ -52,7 +51,6 @@ let package = Package(
             name: "Graph",
             dependencies: [
                 "Files",
-                "GraphViz",
                 "Utilities",
             ]
         ),

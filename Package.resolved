@@ -19,15 +19,6 @@
       }
     },
     {
-      "identity" : "graphviz",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SwiftDocOrg/GraphViz",
-      "state" : {
-        "revision" : "74b6cbd8c5ecea9f64d84c4e1c88d65604dd033f",
-        "version" : "0.4.1"
-      }
-    },
-    {
       "identity" : "shellout",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/JohnSundell/ShellOut.git",
