@@ -40,15 +40,20 @@ extension BuckImpl {
         if input.cleanupImportsConfig.expandImports {
             try expandImports(
                 for: buckModules,
-                excludingPaths: input.ignoreFolders ?? [],
+                excludingPaths: input.cleanupImportsConfig.ignoreFolders ?? [],
                 rootFolderPath: rootFolderPath
             )
         }
         if input.cleanupImportsConfig.reduceImports {
-            let parsedFiles = try loadParsedFiles(parserResultsPath: input.parserResultsPath)
-            let estimatedImports = input.cleanupImportsConfig.ignoreEstimatedImports
-                ? [:]
-                : try buildEstimatedImports(with: buckModules, files: parsedFiles, rootFolderPath: rootFolderPath)
+            let estimatedImports: [String: [String]]
+
+            if input.cleanupImportsConfig.ignoreEstimatedImports {
+                estimatedImports = [:]
+            } else {
+                let parsedFiles = try loadParsedFiles(parserResultsPath: input.cleanupImportsConfig.parserResultsPath)
+                estimatedImports = try buildEstimatedImports(with: buckModules, files: parsedFiles, rootFolderPath: rootFolderPath)
+            }
+
             try reduceImports(
                 for: buckModules,
                 rootFolderPath: rootFolderPath,
@@ -151,6 +156,7 @@ extension BuckImpl {
                 LogInfo("Skipped \(file.path) since the extension is not in the cleanupImportsConfig.fileTypes allowlist")
                 return
             }
+
             let targets: [String]
             if Self.headerFiles.contains(where: { file.name.hasSuffix($0) }) {
                 // changing a header file's imports breaks downstream dependencies
@@ -472,7 +478,7 @@ extension BuckImpl {
         LogInfo("Reduced dependencies for \(module.target)")
     }
 
-    /// Use the results of the `parser` command to increase the efficiency of `reduceBuckDependencies`.
+    /// Increases the efficiency of `reduceBuckDependencies`.
     ///
     /// Returns a mapping of buck target name --> array of buck target name deps that should not be be removed.
     /// Estimated dependencies are calculated by scanning the code files for import lines. This implies that unused import lines

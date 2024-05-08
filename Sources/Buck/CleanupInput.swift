@@ -58,23 +58,32 @@ public struct CleanupInput: Codable, ReflectedStringConvertible, Equatable {
          */
         public let fileTypes: [String]
 
+        /// A denylist of folders to be processed by  `expandImports`.
+        public let ignoreFolders: [String]?
+
         /**
           If `false`, you are expected to pass in parser results via`parserResultsPath` to generate `estimatedImports`.
           `estimatedImports` speeds up the time to run `reduceImports` by skipping over imports that are known to be required.
-          Parser results are generated via the `refactor parser` command.
          */
         public let ignoreEstimatedImports: Bool
+
+        /// Folder of results previously generated via the `refactor parser` command.
+        public let parserResultsPath: String?
 
         public init(
             expandImports: Bool = false,
             reduceImports: Bool = false,
             fileTypes: [String] = [],
-            ignoreEstimatedImports: Bool = false
+            ignoreFolders: [String]? = nil,
+            ignoreEstimatedImports: Bool = false,
+            parserResultsPath: String? = nil
         ) {
             self.expandImports = expandImports
             self.reduceImports = reduceImports
             self.fileTypes = fileTypes
+            self.ignoreFolders = ignoreFolders
             self.ignoreEstimatedImports = ignoreEstimatedImports
+            self.parserResultsPath = parserResultsPath
         }
     }
 
@@ -83,9 +92,8 @@ public struct CleanupInput: Codable, ReflectedStringConvertible, Equatable {
         public let reduceBuckDependencies: Bool
 
         /**
-          If `false`, you are expected to pass in parser results via`parserResultsPath` to generate `estimatedImports`.
-          `estimatedImports` speeds up the time to run `reduceBuckDependencies` by skipping over imports that are known to be required.
-          Parser results are generated via the `refactor parser` command.
+          If `true`, generate an `estimatedDependencies` list from scanning the code files of the modules being processed.
+          `estimatedDependencies` speeds up the time to run `reduceBuckDependencies` by skipping over deps that are known to be required.
          */
         public let ignoreEstimatedDependencies: Bool
 
@@ -95,28 +103,26 @@ public struct CleanupInput: Codable, ReflectedStringConvertible, Equatable {
         }
     }
 
+    /// Root nodes of module trees to be processed by expandImports, reduceImports, reduceDeps
     public let projectBuildTargets: [String]
-    public let parserResultsPath: String?
+    /// Manual list of modules to be processed by expandImports, reduceImports, reduceDeps
+    /// Must be in `projectBuildTargets`. Unclear why this exists.
     public let modules: [String]?
-    public let ignoreModules: [String]?
-    public let ignoreFolders: [String]?
+
+    /// The subconfig for expanding and reducing imports, as specified above.
     public let cleanupImportsConfig: CleanupImportsConfig
+
+    /// The subconfig for reducing buck dependencies, as specified above.
     public let cleanupBuckConfig: CleanupBuckConfig
 
     public init(
         projectBuildTargets: [String],
-        parserResultsPath: String? = nil,
         modules: [String]? = nil,
-        ignoreModules: [String]? = nil,
-        ignoreFolders: [String]? = nil,
         cleanupImportsConfig: CleanupImportsConfig = CleanupImportsConfig(),
         cleanupBuckConfig: CleanupBuckConfig = CleanupBuckConfig()
     ) {
         self.projectBuildTargets = projectBuildTargets
-        self.parserResultsPath = parserResultsPath
         self.modules = modules
-        self.ignoreModules = ignoreModules
-        self.ignoreFolders = ignoreFolders
         self.cleanupImportsConfig = cleanupImportsConfig
         self.cleanupBuckConfig = cleanupBuckConfig
     }
